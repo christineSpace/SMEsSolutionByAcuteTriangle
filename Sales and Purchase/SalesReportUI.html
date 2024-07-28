@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .container {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 400px;
+        width: 100%;
+        text-align: center;
+      }
+      h3 {
+        color: #333;
+        margin-bottom: 20px;
+      }
+      .button-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      button {
+        padding: 12px;
+        font-size: 16px;
+        color: white;
+        background-color: #4285f4;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      button:hover {
+        background-color: #357ae8;
+      }
+      @media (max-width: 480px) {
+        button {
+          font-size: 14px;
+          padding: 10px;
+        }
+      }
+    </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Sales Report Generator</h1><br><br>
+    <button class="button" onclick="generateSalesSummary()">Generate Sales Summary Report</button><br><br>
+    <button class="button" onclick="generateSalesByProduct()">Generate Sales by Product Report</button><br><br>
+    <button class="button back-button" onclick="goBack()">Back to Home</button>
+    <br><br><br>
+    <div id="status"></div>
+  </div>
+
+  <script>
+    function updateStatus(message) {
+      document.getElementById('status').innerText = message;
+    }
+
+    function generateSalesSummary() {
+      google.script.run.withSuccessHandler(updateStatus).generateSalesSummaryReport();
+    }
+
+    function generateSalesByProduct() {
+      google.script.run.withSuccessHandler(updateStatus).generateSalesByProductReport();
+    }
+    function goBack() {
+        google.script.run.showIndexUI();
+    }
+  </script>
+</body>
+</html>

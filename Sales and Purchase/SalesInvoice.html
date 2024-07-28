@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      tr:hover {
+        background-color: #f5f5f5;
+      }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+  </head>
+  <body>
+    <h1>Invoice Generator</h1>
+    <p>Select the sales IDs to generate invoices:</p>
+    <form id="invoiceForm">
+      <table id="salesTable">
+        <thead>
+          <tr>
+            <th>Select</th>
+            <th>Sales Invoice ID</th>
+            <th>Sales Date</th>
+            <th>Total Sales</th>
+            <th>Payment Method</th>
+          </tr>
+        </thead>
+        <tbody id="salesData">
+          <!-- Sales data will be populated here -->
+        </tbody>
+      </table>
+      <br>
+      <input type="button" value="Generate Invoices" onclick="generateInvoices()">
+       <input type="button" value="Back" onclick="goBack()">
+    </form>
+    <script>
+      function generateInvoices() {
+        const selectedIds = [];
+        document.querySelectorAll('input[name="salesID"]:checked').forEach(checkbox => {
+          selectedIds.push(checkbox.value);
+        });
+
+        google.script.run.withSuccessHandler(function(response) {
+          alert(response);
+        }).generateInvoices(selectedIds);
+      }
+      
+      function goBack() {
+        google.script.run.showIndexUI();
+      }
+
+      google.script.run.withSuccessHandler(function(data) {
+        const salesData = JSON.parse(data); // Parse the JSON data
+        console.log(salesData); // Log the fetched data for debugging
+        if (!salesData || !Array.isArray(salesData)) {
+          console.error('Invalid data received from getSalesData:', salesData);
+          alert('Failed to fetch sales data.');
+          return;
+        }
+
+        const tbody = document.getElementById('salesData');
+        tbody.innerHTML = ''; // Clear existing rows if any
+
+        salesData.forEach(row => {
+          const formattedDate = new Date(row.salesDate).toLocaleDateString();
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><input type="checkbox" name="salesID" value="${row.salesId}"></td>
+            <td>${row.salesId}</td>
+            <td>${formattedDate}</td>
+            <td>RM ${parseFloat(row.totalSales).toFixed(2)}</td>
+            <td>${row.paymentMethod}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        // Initialize DataTables after data is populated
+        $('#salesTable').DataTable();
+      }).getSalesData();
+    </script>
+  </body>
+</html>

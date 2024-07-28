@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .container {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 400px;
+        width: 100%;
+        text-align: center;
+      }
+      h3 {
+        color: #333;
+        margin-bottom: 20px;
+      }
+      .button-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      button {
+        padding: 12px;
+        font-size: 16px;
+        color: white;
+        background-color: #4285f4;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      button:hover {
+        background-color: #357ae8;
+      }
+      @media (max-width: 480px) {
+        button {
+          font-size: 14px;
+          padding: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h3>Select a Module</h3>
+      <div class="button-container">
+        <button onclick="openUrl('https://docs.google.com/spreadsheets/d/1MVBzgviSD3CvjEa3TdLA24irgGORjy6U85cwphtMJ7g/edit?resourcekey=&gid=1651649763#gid=1651649763')">Employee Data</button>
+        <button onclick="openUrl('https://docs.google.com/spreadsheets/d/10EKeJXeJwo5C6xMnaINMQKtZBry57EUiW7NZuSlaPnw/edit?resourcekey=&gid=1428358629#gid=1428358629')">Leave Module</button>
+        <button onclick="openUrl('https://docs.google.com/spreadsheets/d/1uXlbYIUTQSCmEg5z8if80aCMK6BcTKCIkvaPvtdwJMU/edit?resourcekey=&gid=759913131#gid=759913131')">Talent Management</button>
+      </div>
+    </div>
+
+    <script>
+      function openUrl(url) {
+        google.script.run.openUrl(url);
+      }
+    </script>
+  </body>
+</html>

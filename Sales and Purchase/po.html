@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .po-list {
+      margin-bottom: 20px;
+    }
+    .po-item {
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Purchase Orders</h2>
+  <div class="po-list" id="poList"></div>
+  <button onclick="sendPO()">Send Selected POs</button>
+  <button onclick="google.script.host.close()">Cancel</button>
+  <script>
+    // Fetch and display the purchase orders
+    google.script.run.withSuccessHandler(function(poList) {
+      const poData = JSON.parse(poList);
+      const poListDiv = document.getElementById('poList');
+      poData.forEach(po => {
+        const poItem = document.createElement('div');
+        poItem.className = 'po-item';
+        poItem.innerHTML = `
+          <input type="checkbox" value="${po.poID}" /> 
+          Purchase Order #: ${po.poID} 
+          - Supplier: ${po.supplier} 
+          - Total Amount: ${po.totalAmount}
+        `;
+        poListDiv.appendChild(poItem);
+      });
+    }).getPOList();
+
+    // Send selected purchase orders
+    function sendPO() {
+      const selectedPOs = Array.from(document.querySelectorAll('.po-list input:checked')).map(input => input.value);
+      if (selectedPOs.length === 0) {
+        alert('Please select at least one purchase order to send.');
+        return;
+      }
+      google.script.run.withSuccessHandler(function(response) {
+        alert(response);
+        google.script.host.close();
+      }).sendPurchaseOrders(selectedPOs);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    button, input[type="button"] {
+      padding: 10px;
+      margin: 5px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover, input[type="button"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+  <script>
+    let products = {};
+
+    function loadProducts(data) {
+      products = data;
+    }
+
+    function addProductRow() {
+      var table = document.getElementById('productsTable');
+      var row = table.insertRow();
+      row.innerHTML = `<td><input type="text" name="productId" placeholder="Product ID" required oninput="fillProductName(this)"></td>
+                        <td><input type="text" name="productName" placeholder="Product Name" readonly></td>
+                        <td><input type="number" name="quantity" placeholder="Quantity" required></td>
+                        <td><button type="button" onclick="removeProductRow(this)">Remove</button></td>`;
+    }
+
+    function removeProductRow(button) {
+      var row = button.parentNode.parentNode;
+      row.parentNode.removeChild(row);
+    }
+
+    function fillProductName(input) {
+      var productId = input.value;
+      var row = input.parentNode.parentNode;
+      var productNameInput = row.querySelector('input[name="productName"]');
+      if (products[productId]) {
+        productNameInput.value = products[productId];
+      } else {
+        productNameInput.value = '';
+      }
+    }
+
+    function submitForm() {
+      var form = document.getElementById('quotationForm');
+      var rows = form.querySelectorAll('#productsTable tr');
+      var data = [];
+
+      // Collect form data
+      rows.forEach(function(row, index) {
+        if (index > 0) { // Skip the header row
+          var cells = row.querySelectorAll('input');
+          if (cells[0].value && cells[1].value && cells[2].value) {
+            data.push({
+              productId: cells[0].value,
+              productName: cells[1].value,
+              quantity: cells[2].value
+            });
+          }
+        }
+      });
+
+      if (data.length > 0) {
+        document.getElementById('loading').style.display = 'block';
+        google.script.run.withSuccessHandler(() => {
+          document.getElementById('loading').style.display = 'none';
+          google.script.host.close();
+        }).processQuotationForm(data);
+      } else {
+        alert('Please fill out all required fields.');
+      }
+    }
+
+    // Fetch products data when the page loads
+    window.onload = function() {
+      google.script.run.withSuccessHandler(loadProducts).getProducts();
+    }
+  </script>
+</head>
+<body>
+  <h1>Enter Product Details</h1>
+  <form id="quotationForm">
+    <table id="productsTable" border="1">
+      <tr>
+        <th>Product ID</th>
+        <th>Product Name</th>
+        <th>Quantity</th>
+        <th>Action</th>
+      </tr>
+      <tr>
+        <td><input type="text" name="productId" placeholder="Product ID" required oninput="fillProductName(this)"></td>
+        <td><input type="text" name="productName" placeholder="Product Name" readonly></td>
+        <td><input type="number" name="quantity" placeholder="Quantity" required></td>
+        <td><button type="button" onclick="removeProductRow(this)">Remove</button></td>
+      </tr>
+    </table>
+    <br>
+    <button type="button" onclick="addProductRow()">Add More Products</button>
+    <br><br>
+    <input type="button" value="Submit" onclick="submitForm()">
+    <div id="loading" style="display:none;">Processing...</div>
+  </form>
+</body>
+</html>
+

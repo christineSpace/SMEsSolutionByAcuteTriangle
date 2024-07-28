@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      .container {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      .button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Leave Request Action</h2>
+      <form id="leaveForm">
+        <label for="row">Row Number:</label>
+        <input type="number" id="row" name="row" required><br><br>
+        <label for="action">Action:</label>
+        <select id="action" name="action" required>
+          <option value="approve">Approve</option>
+          <option value="reject">Reject</option>
+        </select><br><br>
+        <button type="button" class="button" onclick="submitForm()">Submit</button>
+      </form>
+      <div id="response"></div>
+    </div>
+    <script>
+      function submitForm() {
+        var form = document.getElementById('leaveForm');
+        var formData = {
+          row: form.row.value,
+          action: form.action.value
+        };
+        google.script.run.withSuccessHandler(function(response) {
+          document.getElementById('response').innerText = response;
+        }).handleFormSubmission(formData);
+      }
+    </script>
+  </body>
+</html>

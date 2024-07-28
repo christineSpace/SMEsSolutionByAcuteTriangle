@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    th {
+      background-color: #f2f2f2;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h2>Price Changes</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Product ID</th>
+        <th>Old Price</th>
+        <th>New Price</th>
+      </tr>
+    </thead>
+    <tbody id="priceChangesTable">
+      <? for (var i = 0; i < priceChanges.length; i++) { ?>
+        <tr>
+          <td><?= priceChanges[i].productId ?></td>
+          <td><?= priceChanges[i].oldPrice ?></td>
+          <td><?= priceChanges[i].newPrice ?></td>
+        </tr>
+      <? } ?>
+    </tbody>
+  </table>
+</body>
+</html>
+
