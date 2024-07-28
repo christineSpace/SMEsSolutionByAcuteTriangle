@@ -23,7 +23,7 @@ The Google Sheet (`GoogleSheet.xlsx`) contains the data and structure used for f
 
 ## Google Form
 
-The structure of the Google Form is documented in `GoogleFormStructure.md`. This form is used for collecting HR-related information.
+The Google Form links are attached in `GoogleForms.md`. This form is used for collecting HR-related information.
 
 ## Apps Script
 
@@ -40,7 +40,7 @@ The Apps Script code is located in the `AppsScript` directory. It includes vario
 ### Google Form
 
 1. Create a new Google Form in your Google Drive.
-2. Refer to `GoogleForm.md` for the structure and questions to add to your form.
+2. Refer to `GoogleForms.md` for the structure and questions to add to your form.
 3. Save and note the Form ID from the URL.
 
 ### Apps Script
