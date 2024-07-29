@@ -23,7 +23,7 @@ The Google Sheet (`GoogleSheet.xlsx`) contains the data and structure used for f
 
 ## Google Form
 
-The Google Form links are attached in `GoogleForms.md`. This form is used for collecting HR-related information.
+The Google Form links are attached in `GoogleForms.md`. This form is used for collecting purchase and HR-related information.
 
 ## Apps Script
 
